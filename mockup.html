@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UmaLog Mockup</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --primary: #8B6914;
+    --secondary: #7D9B76;
+    --bg: #FBF8F3;
+    --surface: #F3EDE4;
+    --text-primary: #3C3226;
+    --text-secondary: #8C8178;
+    --accent: #C67B5C;
+    --success: #6B8E5A;
+    --caution: #D4A03C;
+    --destructive: #C4686D;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #E8E0D8;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 32px;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+
+  h1.page-title {
+    width: 100%;
+    text-align: center;
+    color: var(--text-primary);
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+  }
+  .page-subtitle {
+    width: 100%;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  .screen-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .screen-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+  }
+
+  .phone {
+    width: 375px;
+    height: 812px;
+    background: var(--bg);
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 0 2px #D0C8BE;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .status-bar {
+    height: 54px;
+    background: var(--bg);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 8px;
+    flex-shrink: 0;
+  }
+  .notch {
+    width: 120px;
+    height: 28px;
+    background: #1C1916;
+    border-radius: 0 0 16px 16px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .nav-bar {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    flex-shrink: 0;
+  }
+  .nav-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .nav-btn {
+    font-size: 22px;
+    color: var(--primary);
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+  }
+  .nav-btn:hover { background: var(--surface); }
+  .nav-btn.text-btn {
+    font-size: 15px;
+    font-weight: 600;
+    width: auto;
+    padding: 0 8px;
+  }
+
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 16px 8px;
+  }
+  .content::-webkit-scrollbar { display: none; }
+
+  .tab-bar {
+    height: 82px;
+    background: var(--bg);
+    border-top: 0.5px solid rgba(140,129,120,0.2);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    padding-top: 8px;
+    flex-shrink: 0;
+  }
+  .tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 4px 8px;
+  }
+  .tab-icon { font-size: 22px; }
+  .tab-label { font-size: 10px; font-weight: 500; }
+  .tab-item.active .tab-icon,
+  .tab-item.active .tab-label { color: var(--primary); }
+  .tab-item:not(.active) .tab-icon,
+  .tab-item:not(.active) .tab-label { color: var(--text-secondary); }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  }
+
+  /* Record Row */
+  .record-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .record-thumb {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .record-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .record-info { flex: 1; min-width: 0; }
+  .record-date {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+  }
+  .record-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+  }
+  .record-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+  .tag-green { background: rgba(125,155,118,0.15); color: var(--secondary); }
+  .tag-brown { background: rgba(139,105,20,0.12); color: var(--primary); }
+  .tag-accent { background: rgba(198,123,92,0.12); color: var(--accent); }
+  .stars {
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+  .record-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .weather-icon {
+    font-size: 18px;
+    color: var(--secondary);
+  }
+
+  /* Search */
+  .search-bar {
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .search-bar input {
+    border: none;
+    background: none;
+    font-size: 15px;
+    color: var(--text-primary);
+    width: 100%;
+    outline: none;
+    font-family: inherit;
+  }
+  .search-bar input::placeholder { color: var(--text-secondary); }
+  .search-icon { color: var(--text-secondary); font-size: 16px; }
+
+  /* Section */
+  .section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 16px 0 8px;
+  }
+
+  /* Form */
+  .form-group {
+    margin-bottom: 14px;
+  }
+  .form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .form-input {
+    background: var(--white);
+    border: 1px solid rgba(140,129,120,0.25);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 15px;
+    color: var(--text-primary);
+    width: 100%;
+    font-family: inherit;
+    outline: none;
+  }
+  .form-input:focus { border-color: var(--primary); }
+  .form-input::placeholder { color: rgba(140,129,120,0.5); }
+  .form-row {
+    display: flex;
+    gap: 10px;
+  }
+  .form-row .form-group { flex: 1; }
+
+  .form-select-btn {
+    background: var(--white);
+    border: 1px solid rgba(140,129,120,0.25);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 15px;
+    color: var(--text-primary);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .form-select-btn .chevron { color: var(--text-secondary); font-size: 14px; }
+
+  .horse-select-btn {
+    background: var(--white);
+    border: 1px solid rgba(140,129,120,0.25);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    width: 100%;
+  }
+  .horse-select-btn .horse-mini-thumb {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #C4A882, #8B6914);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .horse-select-btn .horse-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    flex: 1;
+  }
+
+  /* Star Rating Interactive */
+  .star-rating-large {
+    display: flex;
+    gap: 6px;
+  }
+  .star-rating-large span {
+    font-size: 28px;
+    cursor: pointer;
+  }
+  .star-filled { color: var(--accent); }
+  .star-empty { color: rgba(140,129,120,0.3); }
+
+  /* Horse Grid */
+  .horse-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .horse-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    padding: 8px 4px;
+    border-radius: 12px;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .horse-cell:hover { background: var(--surface); }
+  .horse-cell.selected { background: rgba(139,105,20,0.08); }
+  .horse-cell .horse-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #D4C4A8, #A08B6B);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: white;
+    border: 3px solid transparent;
+    overflow: hidden;
+    position: relative;
+  }
+  .horse-cell.selected .horse-img {
+    border-color: var(--primary);
+  }
+  .horse-cell .check-overlay {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 22px;
+    height: 22px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    border: 2px solid var(--bg);
+  }
+  .horse-cell .horse-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-align: center;
+  }
+  .add-horse-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 12px;
+    border: 2px dashed rgba(140,129,120,0.3);
+    border-radius: 12px;
+    color: var(--primary);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background: none;
+    width: 100%;
+    font-family: inherit;
+    margin-bottom: 12px;
+  }
+  .add-horse-btn:hover { background: rgba(139,105,20,0.04); }
+
+  /* Weather Grid */
+  .weather-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .weather-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    background: var(--white);
+    transition: all 0.15s;
+  }
+  .weather-cell.selected {
+    border-color: var(--secondary);
+    background: rgba(125,155,118,0.08);
+  }
+  .weather-cell .w-icon { font-size: 24px; }
+  .weather-cell .w-label { font-size: 11px; color: var(--text-secondary); font-weight: 500; }
+
+  /* Ground Condition */
+  .ground-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .ground-pill {
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1.5px solid rgba(140,129,120,0.2);
+    background: var(--white);
+    color: var(--text-primary);
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .ground-pill.selected {
+    border-color: var(--primary);
+    background: rgba(139,105,20,0.08);
+    color: var(--primary);
+  }
+
+  /* Stats */
+  .stat-card {
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .stat-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .stat-period {
+    font-size: 12px;
+    color: var(--text-secondary);
+    padding: 4px 10px;
+    background: var(--white);
+    border-radius: 10px;
+  }
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 120px;
+    padding-top: 8px;
+  }
+  .bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .bar {
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    min-height: 4px;
+  }
+  .bar-label {
+    font-size: 10px;
+    color: var(--text-secondary);
+  }
+  .bar-value {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .line-chart {
+    height: 100px;
+    position: relative;
+    margin: 8px 0;
+  }
+  .line-chart svg { width: 100%; height: 100%; }
+
+  .stat-summary {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .summary-item {
+    flex: 1;
+    background: var(--surface);
+    border-radius: 12px;
+    padding: 14px 12px;
+    text-align: center;
+  }
+  .summary-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary);
+  }
+  .summary-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  /* Horse Detail */
+  .horse-profile-header {
+    text-align: center;
+    padding: 8px 0 16px;
+  }
+  .horse-profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #D4C4A8, #8B6914);
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 42px;
+    color: white;
+    border: 3px solid var(--surface);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .horse-profile-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  .horse-profile-breed {
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+  .trait-section { margin-bottom: 14px; }
+  .trait-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .trait-text {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.5;
+    background: var(--white);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+
+  /* Combobox */
+  .combobox-container { position: relative; }
+  .combobox-dropdown {
+    background: var(--white);
+    border: 1px solid rgba(140,129,120,0.2);
+    border-radius: 8px;
+    margin-top: 4px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .combobox-item {
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: inherit;
+  }
+  .combobox-item:hover { background: var(--surface); }
+  .combobox-item.add-new {
+    color: var(--primary);
+    font-weight: 600;
+    border-top: 1px solid rgba(140,129,120,0.1);
+  }
+  .combobox-item .item-icon { font-size: 16px; }
+
+  /* Settings */
+  .settings-group {
+    background: var(--surface);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .settings-item {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 0.5px solid rgba(140,129,120,0.15);
+  }
+  .settings-item:last-child { border-bottom: none; }
+  .settings-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .settings-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: white;
+  }
+  .settings-label { font-size: 15px; color: var(--text-primary); }
+  .settings-value { font-size: 14px; color: var(--text-secondary); }
+  .toggle {
+    width: 44px;
+    height: 26px;
+    border-radius: 13px;
+    background: var(--secondary);
+    position: relative;
+    cursor: pointer;
+  }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: white;
+    border-radius: 50%;
+    top: 2px;
+    right: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  }
+  .toggle.off {
+    background: rgba(140,129,120,0.3);
+  }
+  .toggle.off::after {
+    right: auto;
+    left: 2px;
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+  }
+  .empty-state .empty-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+  }
+  .empty-state .empty-text {
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+  .empty-state .empty-sub {
+    font-size: 13px;
+    opacity: 0.7;
+  }
+
+  /* Primary button */
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    font-family: inherit;
+    transition: opacity 0.15s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+
+  /* Photo section */
+  .photo-row {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .photo-thumb {
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
+    background: var(--surface);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: var(--text-secondary);
+    overflow: hidden;
+  }
+  .photo-add {
+    border: 2px dashed rgba(140,129,120,0.3);
+    background: none;
+  }
+
+  /* Record Detail media */
+  .detail-media {
+    width: 100%;
+    height: 200px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #D4C4A8 0%, #B8A88E 100%);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: white;
+    position: relative;
+  }
+  .media-count {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 10px;
+  }
+
+  .detail-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .detail-info-item {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 10px 12px;
+  }
+  .detail-info-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+  }
+  .detail-info-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  /* Pie chart placeholder */
+  .pie-chart {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: conic-gradient(
+      var(--primary) 0deg 130deg,
+      var(--secondary) 130deg 230deg,
+      var(--accent) 230deg 310deg,
+      var(--caution) 310deg 360deg
+    );
+    margin: 12px auto;
+    position: relative;
+  }
+  .pie-center {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    background: var(--surface);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .pie-center-num { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+  .pie-center-label { font-size: 9px; color: var(--text-secondary); }
+  .pie-legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  /* Textarea */
+  .form-textarea {
+    background: var(--white);
+    border: 1px solid rgba(140,129,120,0.25);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: var(--text-primary);
+    width: 100%;
+    font-family: inherit;
+    outline: none;
+    resize: none;
+    line-height: 1.5;
+  }
+  .form-textarea:focus { border-color: var(--primary); }
+
+  /* Horse list */
+  .horse-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--surface);
+    border-radius: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+  }
+  .horse-list-thumb {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #D4C4A8, #A08B6B);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: white;
+    flex-shrink: 0;
+  }
+  .horse-list-info { flex: 1; }
+  .horse-list-name { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+  .horse-list-sub { font-size: 12px; color: var(--text-secondary); }
+  .horse-list-badge {
+    background: rgba(139,105,20,0.1);
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 10px;
+  }
+</style>
+</head>
+<body>
+
+<h1 class="page-title">UmaLog</h1>
+<p class="page-subtitle">iOS Mockup Preview</p>
+
+<!-- ===== SCREEN 1: Timeline ===== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Timeline</div>
+  <div class="phone">
+    <div class="status-bar"><div class="notch"></div></div>
+    <div class="nav-bar">
+      <div style="width:36px"></div>
+      <div class="nav-title">Riding Log</div>
+      <button class="nav-btn" style="color:var(--primary); font-size:26px;">+</button>
+    </div>
+    <div class="content">
+      <div class="search-bar">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" placeholder="Search records...">
+      </div>
+
+      <div class="section-title">Today</div>
+      <div class="card record-row">
+        <div class="record-thumb" style="background: linear-gradient(135deg, #C4A882, #8B6914);">&#127943;</div>
+        <div class="record-info">
+          <div class="record-date">2026/02/09 10:00 - 11:00</div>
+          <div class="record-title">Apollo - Flatwork</div>
+          <div class="record-meta">
+            <span class="tag tag-green">Tanaka</span>
+            <span class="tag tag-brown">Beginner</span>
+            <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+          </div>
+        </div>
+        <div class="record-right">
+          <span class="weather-icon">&#9728;&#65039;</span>
+        </div>
+      </div>
+
+      <div class="section-title">Yesterday</div>
+      <div class="card record-row">
+        <div class="record-thumb" style="background: linear-gradient(135deg, #A08B6B, #6B5E4B);">&#127943;</div>
+        <div class="record-info">
+          <div class="record-date">2026/02/08 14:00 - 15:00</div>
+          <div class="record-title">Luna - Jumping</div>
+          <div class="record-meta">
+            <span class="tag tag-green">Yamada</span>
+            <span class="tag tag-accent">Intermediate</span>
+            <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+        <div class="record-right">
+          <span class="weather-icon">&#9729;&#65039;</span>
+        </div>
+      </div>
+
+      <div class="card record-row">
+        <div class="record-thumb" style="background: linear-gradient(135deg, #B8A070, #7A6844);">&#127943;</div>
+        <div class="record-info">
+          <div class="record-date">2026/02/08 10:00 - 11:30</div>
+          <div class="record-title">Storm - Dressage</div>
+          <div class="record-meta">
+            <span class="tag tag-green">Suzuki</span>
+            <span class="tag tag-brown">Advanced</span>
+            <span class="stars">&#9733;&#9733;&#9733;&#9734;&#9734;</span>
+          </div>
+        </div>
+        <div class="record-right">
+          <span class="weather-icon">&#9729;&#65039;</span>
+        </div>
+      </div>
+
+      <div class="section-title">Feb 6</div>
+      <div class="card record-row">
+        <div class="record-thumb" style="background: linear-gradient(135deg, #C4A882, #8B6914);">&#127943;</div>
+        <div class="record-info">
+          <div class="record-date">2026/02/06 09:00 - 10:00</div>
+          <div class="record-title">Apollo - Trail Ride</div>
+          <div class="record-meta">
+            <span class="tag tag-green">Tanaka</span>
+            <span class="tag tag-brown">Beginner</span>
+            <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+          </div>
+        </div>
+        <div class="record-right">
+          <span class="weather-icon">&#9728;&#65039;</span>
+        </div>
+      </div>
+
+      <div class="card record-row">
+        <div class="record-thumb" style="background: linear-gradient(135deg, #A08B6B, #6B5E4B);">&#127943;</div>
+        <div class="record-info">
+          <div class="record-date">2026/02/06 15:00 - 16:00</div>
+          <div class="record-title">Luna - Flatwork</div>
+          <div class="record-meta">
+            <span class="tag tag-green">Yamada</span>
+            <span class="tag tag-accent">Intermediate</span>
+            <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+          </div>
+        </div>
+        <div class="record-right">
+          <span class="weather-icon">&#127782;&#65039;</span>
+        </div>
+      </div>
+    </div>
+    <div class="tab-bar">
+      <button class="tab-item active"><span class="tab-icon">&#128214;</span><span class="tab-label">Log</span></button>
+      <button class="tab-item"><span class="tab-icon">&#128202;</span><span class="tab-label">Stats</span></button>
+      <button class="tab-item"><span class="tab-icon">&#127943;</span><span class="tab-label">Horses</span></button>
+      <button class="tab-item"><span class="tab-icon">&#9881;&#65039;</span><span class="tab-label">Settings</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCREEN 2: Record Form ===== -->
+<div class="screen-wrapper">
+  <div class="screen-label">New Record</div>
+  <div class="phone">
+    <div class="status-bar"><div class="notch"></div></div>
+    <div class="nav-bar">
+      <button class="nav-btn text-btn">Cancel</button>
+      <div class="nav-title">New Record</div>
+      <button class="nav-btn text-btn" style="color:var(--primary); font-weight:700;">Save</button>
+    </div>
+    <div class="content">
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input class="form-input" type="text" value="2026/02/09" readonly>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Start</label>
+          <input class="form-input" type="text" value="10:00" readonly>
+        </div>
+        <div class="form-group">
+          <label class="form-label">End</label>
+          <input class="form-input" type="text" value="11:00" readonly>
+        </div>
+        <div class="form-group" style="flex:0.7">
+          <label class="form-label">Duration</label>
+          <div class="form-input" style="color:var(--primary); font-weight:600;">60 min</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Horse</label>
+        <div class="horse-select-btn">
+          <div class="horse-mini-thumb">&#127943;</div>
+          <span class="horse-name">Apollo</span>
+          <span class="chevron" style="color:var(--text-secondary);">&#8250;</span>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Lesson</label>
+          <button class="form-select-btn">
+            <span>Beginner Flat</span>
+            <span class="chevron">&#8250;</span>
+          </button>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Instructor</label>
+          <button class="form-select-btn">
+            <span>Tanaka</span>
+            <span class="chevron">&#8250;</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Weather</label>
+        <div class="weather-grid">
+          <div class="weather-cell selected"><span class="w-icon">&#9728;&#65039;</span><span class="w-label">Sunny</span></div>
+          <div class="weather-cell"><span class="w-icon">&#9729;&#65039;</span><span class="w-label">Cloudy</span></div>
+          <div class="weather-cell"><span class="w-icon">&#127782;&#65039;</span><span class="w-label">Rainy</span></div>
+          <div class="weather-cell"><span class="w-icon">&#10052;&#65039;</span><span class="w-label">Snowy</span></div>
+          <div class="weather-cell"><span class="w-icon">&#128168;</span><span class="w-label">Windy</span></div>
+          <div class="weather-cell"><span class="w-icon">&#127787;&#65039;</span><span class="w-label">Foggy</span></div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group" style="flex:0.5">
+          <label class="form-label">Temp</label>
+          <input class="form-input" type="text" value="12 C">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ground</label>
+          <div class="ground-pills">
+            <button class="ground-pill selected">Good</button>
+            <button class="ground-pill">Soft</button>
+            <button class="ground-pill">Muddy</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Rating</label>
+        <div class="star-rating-large">
+          <span class="star-filled">&#9733;</span>
+          <span class="star-filled">&#9733;</span>
+          <span class="star-filled">&#9733;</span>
+          <span class="star-filled">&#9733;</span>
+          <span class="star-empty">&#9733;</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Photos / Videos</label>
+        <div class="photo-row">
+          <div class="photo-thumb" style="background:linear-gradient(135deg,#D4C4A8,#B8A88E); color:white;">&#127943;</div>
+          <div class="photo-thumb" style="background:linear-gradient(135deg,#A8C4A0,#7D9B76); color:white;">&#127793;</div>
+          <div class="photo-thumb photo-add">&#43;</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Notes</label>
+        <textarea class="form-textarea" rows="3" placeholder="How was today's ride?">Right lead canter felt smoother. Need to focus on half-halt timing.</textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCREEN 3: Horse Picker ===== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Horse Picker</div>
+  <div class="phone">
+    <div class="status-bar"><div class="notch"></div></div>
+    <div class="nav-bar">
+      <button class="nav-btn text-btn">Cancel</button>
+      <div class="nav-title">Select Horse</div>
+      <button class="nav-btn text-btn" style="color:var(--primary); font-weight:700;">Done</button>
+    </div>
+    <div class="content">
+      <div class="search-bar">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" placeholder="Search by name...">
+      </div>
+
+      <div class="horse-grid">
+        <div class="horse-cell selected">
+          <div class="horse-img" style="background: linear-gradient(135deg, #C4A882, #8B6914);">
+            &#127943;
+            <div class="check-overlay">&#10003;</div>
+          </div>
+          <span class="horse-name">Apollo</span>
+        </div>
+        <div class="horse-cell">
+          <div class="horse-img" style="background: linear-gradient(135deg, #A08B6B, #6B5E4B);">&#127943;</div>
+          <span class="horse-name">Luna</span>
+        </div>
+        <div class="horse-cell">
+          <div class="horse-img" style="background: linear-gradient(135deg, #B8A070, #7A6844);">&#127943;</div>
+          <span class="horse-name">Storm</span>
+        </div>
+        <div class="horse-cell">
+          <div class="horse-img" style="background: linear-gradient(135deg, #C4B090, #9A8868);">&#127943;</div>
+          <span class="horse-name">Sakura</span>
+        </div>
+        <div class="horse-cell">
+          <div class="horse-img" style="background: linear-gradient(135deg, #8B7D6B, #5E5040);">&#127943;</div>
+          <span class="horse-name">Thunder</span>
+        </div>
+        <div class="horse-cell">
+          <div class="horse-img" style="background: linear-gradient(135deg, #D4A880, #A08060);">&#127943;</div>
+          <span class="horse-name">Maple</span>
+        </div>
+        <div class="horse-cell">
+          <div class="horse-img" style="background: linear-gradient(135deg, #B0A090, #8A7A68);">&#127943;</div>
+          <span class="horse-name">Kaze</span>
+        </div>
+        <div class="horse-cell">
+          <div class="horse-img" style="background: linear-gradient(135deg, #C0A478, #8B7A54);">&#127943;</div>
+          <span class="horse-name">Hana</span>
+        </div>
+        <div class="horse-cell">
+          <div class="horse-img" style="background: linear-gradient(135deg, #A4967E, #746652);">&#127943;</div>
+          <span class="horse-name">Comet</span>
+        </div>
+      </div>
+
+      <button class="add-horse-btn">&#43; Add new horse</button>
+
+      <!-- Selected horse detail preview -->
+      <div class="card" style="border-left: 3px solid var(--primary);">
+        <div style="font-size:13px; font-weight:600; color:var(--primary); margin-bottom:6px;">Apollo</div>
+        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:3px;">
+          <strong style="color:var(--text-primary);">Personality:</strong> Gentle and friendly
+        </div>
+        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:3px;">
+          <strong style="color:var(--text-primary);">Habits:</strong> Slow right lead canter departure
+        </div>
+        <div style="font-size:12px; color:var(--text-secondary);">
+          <strong style="color:var(--text-primary);">Equipment:</strong> Running martingale
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCREEN 4: Instructor / Lesson Picker ===== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Instructor Picker</div>
+  <div class="phone">
+    <div class="status-bar"><div class="notch"></div></div>
+    <div class="nav-bar">
+      <button class="nav-btn text-btn">Cancel</button>
+      <div class="nav-title">Instructor</div>
+      <div style="width:60px"></div>
+    </div>
+    <div class="content">
+      <div class="combobox-container">
+        <div class="form-group">
+          <label class="form-label">Instructor name</label>
+          <input class="form-input" type="text" value="Sat" placeholder="Type to search...">
+        </div>
+        <div class="combobox-dropdown">
+          <div class="combobox-item">
+            <span class="item-icon">&#128100;</span>
+            Sato
+          </div>
+          <div class="combobox-item add-new">
+            <span class="item-icon">&#43;</span>
+            Add "Sat" as new
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:30px; border-top: 1px solid rgba(140,129,120,0.15); padding-top: 20px;">
+        <div class="section-title">Recent Instructors</div>
+        <div class="combobox-item" style="background:var(--surface); border-radius:8px; margin-bottom:6px;">
+          <span class="item-icon">&#128100;</span>
+          Tanaka
+        </div>
+        <div class="combobox-item" style="background:var(--surface); border-radius:8px; margin-bottom:6px;">
+          <span class="item-icon">&#128100;</span>
+          Yamada
+        </div>
+        <div class="combobox-item" style="background:var(--surface); border-radius:8px; margin-bottom:6px;">
+          <span class="item-icon">&#128100;</span>
+          Suzuki
+        </div>
+      </div>
+
+      <div style="margin-top:30px; border-top: 1px solid rgba(140,129,120,0.15); padding-top: 20px;">
+        <div class="nav-title" style="font-size:16px; margin-bottom:12px;">Lesson Picker</div>
+        <div class="form-group">
+          <label class="form-label">Lesson name</label>
+          <input class="form-input" type="text" placeholder="Type to search...">
+        </div>
+        <div class="combobox-dropdown">
+          <div class="combobox-item"><span class="item-icon">&#128218;</span> Beginner Flat</div>
+          <div class="combobox-item"><span class="item-icon">&#128218;</span> Intermediate Jumping</div>
+          <div class="combobox-item"><span class="item-icon">&#128218;</span> Dressage Lesson</div>
+          <div class="combobox-item"><span class="item-icon">&#128218;</span> Trail Ride</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCREEN 5: Record Detail ===== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Record Detail</div>
+  <div class="phone">
+    <div class="status-bar"><div class="notch"></div></div>
+    <div class="nav-bar">
+      <button class="nav-btn text-btn" style="font-size:18px;">&#8249; Back</button>
+      <div class="nav-title">Detail</div>
+      <button class="nav-btn text-btn">Edit</button>
+    </div>
+    <div class="content">
+      <div class="detail-media">
+        &#127943;
+        <div class="media-count">1 / 3</div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+        <div style="width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,#C4A882,#8B6914); display:flex; align-items:center; justify-content:center; color:white; font-size:18px;">&#127943;</div>
+        <div>
+          <div style="font-size:18px; font-weight:700; color:var(--text-primary);">Apollo</div>
+          <div style="font-size:13px; color:var(--text-secondary);">2026/02/09 (Sun) 10:00 - 11:00</div>
+        </div>
+      </div>
+
+      <div class="detail-info-grid">
+        <div class="detail-info-item">
+          <div class="detail-info-label">Lesson</div>
+          <div class="detail-info-value">Beginner Flat</div>
+        </div>
+        <div class="detail-info-item">
+          <div class="detail-info-label">Instructor</div>
+          <div class="detail-info-value">Tanaka</div>
+        </div>
+        <div class="detail-info-item">
+          <div class="detail-info-label">Weather</div>
+          <div class="detail-info-value">&#9728;&#65039; Sunny / 12 C</div>
+        </div>
+        <div class="detail-info-item">
+          <div class="detail-info-label">Ground</div>
+          <div class="detail-info-value">Good</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:13px; font-weight:600; color:var(--text-secondary); margin-bottom:6px;">Rating</div>
+        <div class="star-rating-large" style="margin-bottom:4px;">
+          <span class="star-filled" style="font-size:22px;">&#9733;</span>
+          <span class="star-filled" style="font-size:22px;">&#9733;</span>
+          <span class="star-filled" style="font-size:22px;">&#9733;</span>
+          <span class="star-filled" style="font-size:22px;">&#9733;</span>
+          <span class="star-empty" style="font-size:22px;">&#9733;</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-size:13px; font-weight:600; color:var(--text-secondary); margin-bottom:6px;">Notes</div>
+        <div style="font-size:14px; color:var(--text-primary); line-height:1.6;">
+          Right lead canter felt smoother today. Half-halts need more timing work. Apollo was responsive and calm throughout the session.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCREEN 6: Statistics ===== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Statistics</div>
+  <div class="phone">
+    <div class="status-bar"><div class="notch"></div></div>
+    <div class="nav-bar">
+      <div style="width:36px"></div>
+      <div class="nav-title">Statistics</div>
+      <div style="width:36px"></div>
+    </div>
+    <div class="content">
+      <div class="stat-summary">
+        <div class="summary-item">
+          <div class="summary-value">24</div>
+          <div class="summary-label">Rides</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-value" style="color:var(--accent);">4.2</div>
+          <div class="summary-label">Avg Rating</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-value" style="color:var(--secondary);">5</div>
+          <div class="summary-label">Horses</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-title">Rides per Week</div>
+          <div class="stat-period">Last 8 weeks</div>
+        </div>
+        <div class="bar-chart">
+          <div class="bar-col"><div class="bar-value">2</div><div class="bar" style="height:28%; background:var(--primary);"></div><div class="bar-label">W1</div></div>
+          <div class="bar-col"><div class="bar-value">4</div><div class="bar" style="height:56%; background:var(--primary);"></div><div class="bar-label">W2</div></div>
+          <div class="bar-col"><div class="bar-value">3</div><div class="bar" style="height:42%; background:var(--primary);"></div><div class="bar-label">W3</div></div>
+          <div class="bar-col"><div class="bar-value">5</div><div class="bar" style="height:70%; background:var(--primary);"></div><div class="bar-label">W4</div></div>
+          <div class="bar-col"><div class="bar-value">2</div><div class="bar" style="height:28%; background:var(--primary);"></div><div class="bar-label">W5</div></div>
+          <div class="bar-col"><div class="bar-value">4</div><div class="bar" style="height:56%; background:var(--primary);"></div><div class="bar-label">W6</div></div>
+          <div class="bar-col"><div class="bar-value">7</div><div class="bar" style="height:100%; background:var(--accent);"></div><div class="bar-label">W7</div></div>
+          <div class="bar-col"><div class="bar-value">3</div><div class="bar" style="height:42%; background:var(--primary);"></div><div class="bar-label">W8</div></div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-title">Rating Trend</div>
+          <div class="stat-period">Last 30 days</div>
+        </div>
+        <div class="line-chart">
+          <svg viewBox="0 0 300 100" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#C67B5C" stop-opacity="0.2"/>
+                <stop offset="100%" stop-color="#C67B5C" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,60 L40,50 L80,55 L120,35 L160,40 L200,25 L240,30 L280,15 L300,20 L300,100 L0,100Z" fill="url(#lineGrad)"/>
+            <polyline points="0,60 40,50 80,55 120,35 160,40 200,25 240,30 280,15 300,20" fill="none" stroke="#C67B5C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="280" cy="15" r="4" fill="#C67B5C"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-title">Rides by Horse</div>
+        </div>
+        <div class="pie-chart">
+          <div class="pie-center">
+            <div class="pie-center-num">24</div>
+            <div class="pie-center-label">Total</div>
+          </div>
+        </div>
+        <div class="pie-legend">
+          <span class="legend-item"><span class="legend-dot" style="background:var(--primary);"></span> Apollo (9)</span>
+          <span class="legend-item"><span class="legend-dot" style="background:var(--secondary);"></span> Luna (7)</span>
+          <span class="legend-item"><span class="legend-dot" style="background:var(--accent);"></span> Storm (5)</span>
+          <span class="legend-item"><span class="legend-dot" style="background:var(--caution);"></span> Others (3)</span>
+        </div>
+      </div>
+    </div>
+    <div class="tab-bar">
+      <button class="tab-item"><span class="tab-icon">&#128214;</span><span class="tab-label">Log</span></button>
+      <button class="tab-item active"><span class="tab-icon">&#128202;</span><span class="tab-label">Stats</span></button>
+      <button class="tab-item"><span class="tab-icon">&#127943;</span><span class="tab-label">Horses</span></button>
+      <button class="tab-item"><span class="tab-icon">&#9881;&#65039;</span><span class="tab-label">Settings</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCREEN 7: Horse List ===== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Horse List</div>
+  <div class="phone">
+    <div class="status-bar"><div class="notch"></div></div>
+    <div class="nav-bar">
+      <div style="width:36px"></div>
+      <div class="nav-title">My Horses</div>
+      <button class="nav-btn" style="color:var(--primary); font-size:26px;">+</button>
+    </div>
+    <div class="content">
+      <div class="search-bar">
+        <span class="search-icon">&#128269;</span>
+        <input type="text" placeholder="Search horses...">
+      </div>
+
+      <div class="horse-list-item">
+        <div class="horse-list-thumb" style="background: linear-gradient(135deg, #C4A882, #8B6914);">&#127943;</div>
+        <div class="horse-list-info">
+          <div class="horse-list-name">Apollo</div>
+          <div class="horse-list-sub">Thoroughbred - Chestnut</div>
+        </div>
+        <span class="horse-list-badge">9 rides</span>
+      </div>
+
+      <div class="horse-list-item">
+        <div class="horse-list-thumb" style="background: linear-gradient(135deg, #A08B6B, #6B5E4B);">&#127943;</div>
+        <div class="horse-list-info">
+          <div class="horse-list-name">Luna</div>
+          <div class="horse-list-sub">Arabian - Gray</div>
+        </div>
+        <span class="horse-list-badge">7 rides</span>
+      </div>
+
+      <div class="horse-list-item">
+        <div class="horse-list-thumb" style="background: linear-gradient(135deg, #B8A070, #7A6844);">&#127943;</div>
+        <div class="horse-list-info">
+          <div class="horse-list-name">Storm</div>
+          <div class="horse-list-sub">Warmblood - Bay</div>
+        </div>
+        <span class="horse-list-badge">5 rides</span>
+      </div>
+
+      <div class="horse-list-item">
+        <div class="horse-list-thumb" style="background: linear-gradient(135deg, #C4B090, #9A8868);">&#127943;</div>
+        <div class="horse-list-info">
+          <div class="horse-list-name">Sakura</div>
+          <div class="horse-list-sub">Quarter Horse - Palomino</div>
+        </div>
+        <span class="horse-list-badge">2 rides</span>
+      </div>
+
+      <div class="horse-list-item">
+        <div class="horse-list-thumb" style="background: linear-gradient(135deg, #8B7D6B, #5E5040);">&#127943;</div>
+        <div class="horse-list-info">
+          <div class="horse-list-name">Thunder</div>
+          <div class="horse-list-sub">Hanoverian - Dark Bay</div>
+        </div>
+        <span class="horse-list-badge">1 ride</span>
+      </div>
+    </div>
+    <div class="tab-bar">
+      <button class="tab-item"><span class="tab-icon">&#128214;</span><span class="tab-label">Log</span></button>
+      <button class="tab-item"><span class="tab-icon">&#128202;</span><span class="tab-label">Stats</span></button>
+      <button class="tab-item active"><span class="tab-icon">&#127943;</span><span class="tab-label">Horses</span></button>
+      <button class="tab-item"><span class="tab-icon">&#9881;&#65039;</span><span class="tab-label">Settings</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCREEN 8: Horse Detail ===== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Horse Detail</div>
+  <div class="phone">
+    <div class="status-bar"><div class="notch"></div></div>
+    <div class="nav-bar">
+      <button class="nav-btn text-btn" style="font-size:18px;">&#8249; Back</button>
+      <div class="nav-title">Horse</div>
+      <button class="nav-btn text-btn">Edit</button>
+    </div>
+    <div class="content">
+      <div class="horse-profile-header">
+        <div class="horse-profile-img">&#127943;</div>
+        <div class="horse-profile-name">Apollo</div>
+        <div class="horse-profile-breed">Thoroughbred - Chestnut</div>
+      </div>
+
+      <div class="stat-summary" style="margin-bottom:16px;">
+        <div class="summary-item">
+          <div class="summary-value" style="font-size:20px;">9</div>
+          <div class="summary-label">Rides</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-value" style="font-size:20px; color:var(--accent);">4.1</div>
+          <div class="summary-label">Avg Rating</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-value" style="font-size:14px; color:var(--secondary);">Feb 9</div>
+          <div class="summary-label">Last Ride</div>
+        </div>
+      </div>
+
+      <div class="section-title">Traits</div>
+      <div class="card">
+        <div class="trait-section">
+          <div class="trait-label">&#128054; Personality</div>
+          <div class="trait-text">Gentle and friendly. Great for beginners. Calm in new environments. Occasionally stubborn when tired.</div>
+        </div>
+        <div class="trait-section">
+          <div class="trait-label">&#128260; Habits</div>
+          <div class="trait-text">Slow right lead canter departure. Tends to rush downhill. Likes to cut corners on the left rein.</div>
+        </div>
+        <div class="trait-section" style="margin-bottom:0;">
+          <div class="trait-label">&#129717; Special Equipment</div>
+          <div class="trait-text">Running martingale. Flash noseband. Uses soft bit (French link snaffle).</div>
+        </div>
+      </div>
+
+      <div class="section-title">Recent Rides</div>
+      <div class="card record-row" style="padding:10px 12px;">
+        <div class="record-info">
+          <div class="record-date">2026/02/09 10:00</div>
+          <div class="record-title" style="font-size:14px;">Beginner Flat - Tanaka</div>
+          <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</span>
+        </div>
+      </div>
+      <div class="card record-row" style="padding:10px 12px;">
+        <div class="record-info">
+          <div class="record-date">2026/02/06 09:00</div>
+          <div class="record-title" style="font-size:14px;">Trail Ride - Tanaka</div>
+          <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCREEN 9: Settings ===== -->
+<div class="screen-wrapper">
+  <div class="screen-label">Settings</div>
+  <div class="phone">
+    <div class="status-bar"><div class="notch"></div></div>
+    <div class="nav-bar">
+      <div style="width:36px"></div>
+      <div class="nav-title">Settings</div>
+      <div style="width:36px"></div>
+    </div>
+    <div class="content">
+      <div class="section-title">Preferences</div>
+      <div class="settings-group">
+        <div class="settings-item">
+          <div class="settings-left">
+            <div class="settings-icon" style="background:var(--secondary);">&#127777;&#65039;</div>
+            <span class="settings-label">Temperature Unit</span>
+          </div>
+          <span class="settings-value">Celsius &#8250;</span>
+        </div>
+        <div class="settings-item">
+          <div class="settings-left">
+            <div class="settings-icon" style="background:var(--primary);">&#128218;</div>
+            <span class="settings-label">Default Lesson</span>
+          </div>
+          <span class="settings-value">None &#8250;</span>
+        </div>
+        <div class="settings-item">
+          <div class="settings-left">
+            <div class="settings-icon" style="background:var(--accent);">&#128276;</div>
+            <span class="settings-label">Reminders</span>
+          </div>
+          <div class="toggle"></div>
+        </div>
+      </div>
+
+      <div class="section-title">Appearance</div>
+      <div class="settings-group">
+        <div class="settings-item">
+          <div class="settings-left">
+            <div class="settings-icon" style="background:#5C6BC0;">&#127769;</div>
+            <span class="settings-label">Dark Mode</span>
+          </div>
+          <div class="toggle off"></div>
+        </div>
+      </div>
+
+      <div class="section-title">Data</div>
+      <div class="settings-group">
+        <div class="settings-item">
+          <div class="settings-left">
+            <div class="settings-icon" style="background:var(--caution);">&#128230;</div>
+            <span class="settings-label">Export CSV</span>
+          </div>
+          <span class="settings-value">&#8250;</span>
+        </div>
+        <div class="settings-item">
+          <div class="settings-left">
+            <div class="settings-icon" style="background:var(--text-secondary);">&#128190;</div>
+            <span class="settings-label">Storage Used</span>
+          </div>
+          <span class="settings-value">128 MB</span>
+        </div>
+      </div>
+
+      <div class="section-title">About</div>
+      <div class="settings-group">
+        <div class="settings-item">
+          <div class="settings-left">
+            <div class="settings-icon" style="background:var(--primary);">&#127943;</div>
+            <span class="settings-label">UmaLog</span>
+          </div>
+          <span class="settings-value">v1.0.0</span>
+        </div>
+      </div>
+    </div>
+    <div class="tab-bar">
+      <button class="tab-item"><span class="tab-icon">&#128214;</span><span class="tab-label">Log</span></button>
+      <button class="tab-item"><span class="tab-icon">&#128202;</span><span class="tab-label">Stats</span></button>
+      <button class="tab-item"><span class="tab-icon">&#127943;</span><span class="tab-label">Horses</span></button>
+      <button class="tab-item active"><span class="tab-icon">&#9881;&#65039;</span><span class="tab-label">Settings</span></button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
